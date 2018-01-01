@@ -58,7 +58,7 @@ int main(int argc, char const *argv[])
 		std::cout << j2.at("words").dump() << std::endl;
 		auto wl = j2.at("words").get<std::vector<std::map<std::string, std::string>>>();
 		for (auto it : wl) {
-			std::cout << it[0] << std::endl;
+			std::cout << it["a"] << std::endl;
 		}
 		std::string msg = "";
 //		msg = j2["a"];
