@@ -5,7 +5,6 @@
 #include <iostream>
 #include <json.hpp>
 #include <map>
-//#include <sstream>
 #include <string>
 #include <typeinfo>
 #include <vector>
@@ -15,7 +14,7 @@
 std::ifstream infile("words_alpha.txt");
 
 const auto ELEMENTS = 1370100;
-const auto FALSE_POSITIVES = 0.02;
+const auto FALSE_POSITIVES = 0.001;
 
 int main(int argc, char const *argv[])
 {
@@ -40,10 +39,10 @@ int main(int argc, char const *argv[])
     for (auto i : verify_elements) {
         present = bf.possiblyContains(reinterpret_cast<const uint8_t *>(i.c_str()), i.size());
 
-        if (present) {
-            std::cout << "Element '" << i << "' is (probably) present." << std::endl;
+	    if (!present) {
+			std::cout << "Element '" << i << "' is not present." << std::endl;
         } else {
-            std::cout << "Element '" << i << "' is not present." << std::endl;
+			std::cout << "Element '" << i << "' is (probably) present." << std::endl;
         }
     }
 
@@ -71,20 +70,24 @@ int main(int argc, char const *argv[])
 	});
 
 	CROW_ROUTE(app, "/bloom_json").methods("POST"_method)
-	([](const crow::request& req) {
+	([&bf, &present](const crow::request& req) {
 		auto j2 = nlohmann::json::parse(req.body);
 		if (j2["words"].is_null()) {
 			return crow::response(400);
 		}
 		std::cout << j2.at("words").dump() << std::endl;
 		auto wl = j2.at("words").get<std::vector<std::string>>();
-		std::cout << typeid(wl).name() << std::endl;
+
 		for (auto itv : wl) {	// vector
-			std::cout << itv << std::endl;
-		}
+		    present = bf.possiblyContains(reinterpret_cast<const uint8_t *>(itv.c_str()), itv.size());
+		    if (!present) {
+				std::cout << "Element '" << itv << "' is not present." << std::endl;
+	        } else {
+				std::cout << "Element '" << itv << "' is (probably) present." << std::endl;
+	        }
+	    }
+
 		std::string msg = "";
-//		msg = j2["a"];
-//		msg += std::string(j2["b"].get<std::string>());
 		return crow::response(msg);
 	});
 
