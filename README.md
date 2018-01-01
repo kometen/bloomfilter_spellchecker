@@ -2,6 +2,8 @@ I have put together some useful tools and have created a simple spellchecker.
 It uses a wordlist I found here on github, a bloomfilter I found and tried
 a while back.
 
+The article about the bloomfilter can be found at https://blog.michaelschmatz.com/2016/04/11/how-to-write-a-bloom-filter-cpp/.
+
 The idea is to send a json-formatted list in an array with words which is
 parsed using the bloomfilter and can say whether the words exists or not.
 
