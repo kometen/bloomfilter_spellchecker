@@ -2,6 +2,7 @@
 #include <json.hpp>
 #include <map>
 #include <string>
+#include <typeinfo>
 #include <vector>
 
 int main(int argc, char const *argv[])
@@ -57,8 +58,11 @@ int main(int argc, char const *argv[])
 		}
 		std::cout << j2.at("words").dump() << std::endl;
 		auto wl = j2.at("words").get<std::vector<std::map<std::string, std::string>>>();
-		for (auto it : wl) {
-			std::cout << it["a"] << std::endl;
+		std::cout << typeid(wl).name() << std::endl;
+		for (auto itv : wl) {	// vector
+			for (auto itm: itv) {	// map
+				std::cout << itm.first << ", " << itm.second << std::endl;
+			}
 		}
 		std::string msg = "";
 //		msg = j2["a"];
