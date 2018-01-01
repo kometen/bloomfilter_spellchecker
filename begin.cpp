@@ -71,6 +71,7 @@ int main(int argc, char const *argv[])
 
 	CROW_ROUTE(app, "/bloom_json").methods("POST"_method)
 	([&bf, &present](const crow::request& req) {
+		std::map<std::string, bool> parsed_words = {};
 		auto j2 = nlohmann::json::parse(req.body);
 		if (j2["words"].is_null()) {
 			return crow::response(400);
@@ -85,10 +86,11 @@ int main(int argc, char const *argv[])
 	        } else {
 				std::cout << "Element '" << itv << "' is (probably) present." << std::endl;
 	        }
+	        parsed_words[itv] = present;
 	    }
 
-		std::string msg = "";
-		return crow::response(msg);
+		nlohmann::json result(parsed_words);
+		return crow::response(result.dump());
 	});
 
 	app.port(18080).multithreaded().run();
