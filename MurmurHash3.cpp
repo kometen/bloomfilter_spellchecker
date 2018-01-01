@@ -2,9 +2,6 @@
 //  MurmurHash3.cpp
 //  BloomFilter
 //
-//  Created by Claus Guttesen on 14.07.2017.
-//  Copyright © 2017 Claus Guttesen. All rights reserved.
-//
 
 #include "MurmurHash3.hpp"
 

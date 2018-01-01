@@ -1,3 +1,8 @@
+//
+// Inspired by an article I read at
+// http://blog.michaelschmatz.com/2016/04/11/how-to-write-a-bloom-filter-cpp/
+//
+
 #include <cmath>
 #include <ctime>
 #include <crow.h>
